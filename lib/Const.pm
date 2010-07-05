@@ -1,7 +1,6 @@
 package Const;
 
 ## no critic (RequireArgUnpacking, ProhibitAmpersandSigils, ProhibitAutomaticExportation)
-
 use 5.008;
 use strict;
 use warnings FATAL => 'all';
@@ -9,40 +8,29 @@ use warnings::register;
 use Scalar::Util qw/reftype/;
 use Carp qw/croak carp/;
 use Exporter 5.57 'import';
-our @EXPORT = qw/Const/;
+our @EXPORT = qw/const/;
 
 our $VERSION = '0.001';
 
-sub _is_readonly {
-	return &Internals::SvREADONLY($_[0]);
-}
-
-sub _make_clone {
-	my $reftype = reftype $_[0];
-	if ($reftype eq 'SCALAR') {
-		$_[0] = \(my $foo = ${ $_[0] });
-	}
-	elsif ($reftype eq 'ARRAY') {
-		$_[0] = [ @{ $_[0] } ];
-	}
-	elsif ($reftype eq 'HASH') {
-		$_[0] = { %{ $_[0] } };
-	}
-	return;
-}
+# The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 
 sub _make_readonly {
-	my (undef, @args) = @_;
+	my (undef, $dont_clone) = @_;
 	if (my $reftype = reftype $_[0]) {
-		_make_clone($_[0]) if &Internals::SvREFCNT($_[0]) > 1;
+		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
 		if ($reftype eq 'ARRAY') {
+			$_[0] = [ @{ $_[0] } ] if $needs_cloning;
 			_make_readonly($_) for @{ $_[0] };
 		}
 		elsif ($reftype eq 'HASH') {
-			Internals::hv_clear_placeholders %{ $_[0] };
+			$_[0] = { %{ $_[0] } } if $needs_cloning;
+			&Internals::hv_clear_placeholders($_[0]);
 			_make_readonly($_) for values %{ $_[0] };
 		}
-		elsif ($reftype ne 'SCALAR' and warnings::enabled()) {
+		elsif ($reftype eq 'SCALAR') {
+			$_[0] = \(my $anon = ${ $_[0] }) if $needs_cloning;
+		}
+		elsif (warnings::enabled()) {
 			carp 'Can\'t make all of this variable readonly';
 		}
 		&Internals::SvREADONLY($_[0], 1);
@@ -52,9 +40,9 @@ sub _make_readonly {
 }
 
 ## no critic (ProhibitSubroutinePrototypes, ManyArgs)
-sub Const(\[$@%]@) {
+sub const(\[$@%]@) {
 	my (undef, @args) = @_;
-	if (_is_readonly($_[0])) {
+	if (&Internals::SvREADONLY($_[0])) {
 		croak 'Attempt to reassign a readonly variable';
 	}
 	if (reftype $_[0] eq 'SCALAR') {
@@ -71,39 +59,37 @@ sub Const(\[$@%]@) {
 	else {
 		croak 'Can\'t make variable readonly';
 	}
-	_make_readonly($_[0], @args);
+	_make_readonly($_[0], 1);
 	return;
 }
 
 1;    # End of Const
 
+__END__
+
 =head1 NAME
 
-Const - The great new Const!
+Const - Facility for creating read-only scalars, arrays, hashes
 
 =head1 VERSION
 
-Version 0.01
+Version 0.001
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Const;
-
-    my $foo = Const->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+ const my $foo => 'a scalar value';
+ const my @bar => qw/a list value/;
+ const my %buz => (a => 'hash', of => 'something');
 
 =head1 SUBROUTINES/METHODS
 
-=head2 Const
+=head2 const $var, $value
+
+=head2 const @var, @value...
+
+=head2 const %var, %value...
+
+This the only function of this module, it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It wil set the variable to that value and subsequently make it readonly.
 
 =head1 AUTHOR
 
@@ -120,7 +106,6 @@ automatically be notified of progress on your bug as I make changes.
 You can find documentation for this module with the perldoc command.
 
     perldoc Const
-
 
 You can also look for information at:
 
@@ -145,6 +130,8 @@ L<http://search.cpan.org/dist/Const/>
 =back
 
 =head1 ACKNOWLEDGEMENTS
+
+The interface for this module was inspired by Eric Roode's L<Readonly>, but the implementation is radically different to be faster and less fragile.
 
 =head1 LICENSE AND COPYRIGHT
 
