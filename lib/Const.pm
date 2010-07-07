@@ -4,7 +4,6 @@ package Const;
 use 5.008;
 use strict;
 use warnings FATAL => 'all';
-use warnings::register;
 use Scalar::Util qw/reftype/;
 use Carp qw/croak carp/;
 use Exporter 5.57 'import';
@@ -27,11 +26,8 @@ sub _make_readonly {
 			&Internals::hv_clear_placeholders($_[0]);
 			_make_readonly($_) for values %{ $_[0] };
 		}
-		elsif ($reftype eq 'SCALAR') {
-			$_[0] = \(my $anon = ${ $_[0] }) if $needs_cloning;
-		}
-		elsif (warnings::enabled()) {
-			carp 'Can\'t make all of this variable readonly';
+		elsif ($reftype eq 'SCALAR' and $needs_cloning) {
+			$_[0] = \(my $anon = ${ $_[0] });
 		}
 		&Internals::SvREADONLY($_[0], 1);
 	}
@@ -89,7 +85,7 @@ Version 0.001
 
 =head2 const %var, %value...
 
-This the only function of this module, it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It wil set the variable to that value and subsequently make it readonly.
+This the only function of this module, it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly.
 
 =head1 AUTHOR
 
