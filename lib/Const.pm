@@ -9,7 +9,7 @@ use Carp qw/croak carp/;
 use Exporter 5.57 'import';
 our @EXPORT = qw/const/;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 

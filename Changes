@@ -1,5 +1,8 @@
 Revision history for Const
 
-0.01    Date/time
+0.002   2010-07-09
+        Fixed dependencies
+
+0.001   2010-07-07
         First version, released on an unsuspecting world.
 
