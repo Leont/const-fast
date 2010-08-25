@@ -1,15 +1,15 @@
 package Const;
 
-## no critic (RequireArgUnpacking, ProhibitAmpersandSigils, ProhibitAutomaticExportation)
+## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 use 5.008;
 use strict;
 use warnings FATAL => 'all';
+
 use Scalar::Util qw/reftype/;
 use Carp qw/croak carp/;
-use Exporter 5.57 'import';
-our @EXPORT = qw/const/;
+use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 
@@ -69,7 +69,7 @@ Const - Facility for creating read-only scalars, arrays, hashes
 
 =head1 VERSION
 
-Version 0.001
+Version 0.003
 
 =head1 SYNOPSIS
 

@@ -17,7 +17,7 @@ my $builder = Module::Build->new(
 	},
 	requires	        => {
 		perl            => 5.008,
-		Exporter        => 5.57,
+		'Sub::Exporter' => 0,
 	},
 	add_to_cleanup      => [ 'Const-*' ],
 	create_makefile_pl  => 'traditional',
