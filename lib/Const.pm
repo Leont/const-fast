@@ -85,7 +85,13 @@ Version 0.001
 
 =head2 const %var, %value...
 
-This the only function of this module, it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly.
+This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
+
+Exporting is done using Sub::Exporter, so if desired the function can be renamed when importing.
+
+=head1 RATIONALE
+
+This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Reasonly's use of ties is a source of subtle bugs and bad performance. Instead this module is using the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case.
 
 =head1 AUTHOR
 
@@ -127,7 +133,7 @@ L<http://search.cpan.org/dist/Const/>
 
 =head1 ACKNOWLEDGEMENTS
 
-The interface for this module was inspired by Eric Roode's L<Readonly>, but the implementation is radically different to be faster and less fragile.
+The interface for this module was inspired by Eric Roode's L<Readonly>. The implementation is inspired by doing everything the opposite way Readonly does it.
 
 =head1 LICENSE AND COPYRIGHT
 
