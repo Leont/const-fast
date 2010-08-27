@@ -1,5 +1,10 @@
 Revision history for Const-Fast
 
+0.003   2010-08-27
+        Renamed from Const to Const::Fast
+        Added documentation
+        Added better diagnostics for hash assignment
+
 0.002   2010-07-09
         Fixed dependencies
 
