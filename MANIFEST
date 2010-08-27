@@ -2,7 +2,7 @@ Build.PL
 Changes
 MANIFEST
 README
-lib/Const.pm
+lib/Const/Fast.pm
 t/00-load.t
 t/10-basics.t
 t/pod-coverage.t

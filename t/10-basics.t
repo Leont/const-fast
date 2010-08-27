@@ -7,7 +7,7 @@ use warnings FATAL => 'all';
 use Test::More tests => 14;
 use Test::Exception;
 
-use Const;
+use Const::Fast;
 
 sub throws_readonly(&@) {
 	my ($sub, $desc) = @_;

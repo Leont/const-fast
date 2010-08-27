@@ -1,16 +1,16 @@
-package Const;
+package Const::Fast;
 
-## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 use 5.008;
 use strict;
 use warnings FATAL => 'all';
 
 use Scalar::Util qw/reftype/;
-use Carp qw/croak carp/;
+use Carp qw/croak/;
 use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
 our $VERSION = '0.003';
 
+## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 
 sub _make_readonly {
@@ -42,14 +42,15 @@ sub const(\[$@%]@) {
 		croak 'Attempt to reassign a readonly variable';
 	}
 	if (reftype $_[0] eq 'SCALAR') {
-		croak 'No value for readonly ' if @args == 0;
-		carp 'Too many arguments in Readonly assignment' if @args > 1;
+		croak 'No value for readonly variable' if @args == 0;
+		croak 'Too many arguments in readonly assignment' if @args > 1;
 		${ $_[0] } = $args[0];
 	}
 	elsif (reftype $_[0] eq 'ARRAY') {
 		@{ $_[0] } = @args;
 	}
 	elsif (reftype $_[0] eq 'HASH') {
+		croak 'Odd number of elements in hash assignment' if @args % 2;
 		%{ $_[0] } = @args;
 	}
 	else {
@@ -59,13 +60,13 @@ sub const(\[$@%]@) {
 	return;
 }
 
-1;    # End of Const
+1;    # End of Const::Fast
 
 __END__
 
 =head1 NAME
 
-Const - Facility for creating read-only scalars, arrays, hashes
+Const::Fast - Facility for creating read-only scalars, arrays, hashes
 
 =head1 VERSION
 
@@ -73,6 +74,8 @@ Version 0.003
 
 =head1 SYNOPSIS
 
+ use Const::Fast;
+ 
  const my $foo => 'a scalar value';
  const my @bar => qw/a list value/;
  const my %buz => (a => 'hash', of => 'something');
@@ -87,7 +90,7 @@ Version 0.003
 
 This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
 
-Exporting is done using Sub::Exporter, so if desired the function can be renamed when importing.
+Exporting is done using Sub::Exporter for flexibility on import.
 
 =head1 RATIONALE
 
@@ -100,14 +103,14 @@ Leon Timmermans, C<< <leont at cpan.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-const at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const-Fast>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
  
 You can find documentation for this module with the perldoc command.
 
-    perldoc Const
+    perldoc Const::Fast
 
 You can also look for information at:
 
@@ -115,19 +118,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Const>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Const-Fast>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Const>
+L<http://annocpan.org/dist/Const-Fast>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Const>
+L<http://cpanratings.perl.org/d/Const-Fast>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Const/>
+L<http://search.cpan.org/dist/Const-Fast/>
 
 =back
 
