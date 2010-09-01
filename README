@@ -1,6 +1,6 @@
 Const-Fast
 
-Const::Fast creats read-only scalars, arrays, hashes. It's inspired by Readonly but implemented very differently.
+Const::Fast creates read-only scalars, arrays, and hashes. It's inspired by Readonly but implemented very differently.
 
 INSTALLATION
 
