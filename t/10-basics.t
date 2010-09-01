@@ -12,7 +12,7 @@ use Const::Fast;
 sub throws_readonly(&@) {
 	my ($sub, $desc) = @_;
 	my ($file, $line) = (caller)[1,2];
-	my $error = qr/Modification of a read-only value attempted at $file line $line\./;
+	my $error = qr/\AModification of a read-only value attempted at \Q$file\E line $line\.\Z/;
 	&throws_ok($sub, $error, $desc);
 	return;
 }
@@ -20,7 +20,7 @@ sub throws_readonly(&@) {
 sub throws_reassign(&@) {
 	my ($sub, $desc) = @_;
 	my ($file, $line) = (caller)[1,2];
-	my $error = qr/Attempt to reassign a readonly \w+ at $file line $line/;
+	my $error = qr/\AAttempt to reassign a readonly \w+ at \Q$file\E line $line\Z/;
 	&throws_ok($sub, $error, $desc);
 	return;
 }
@@ -35,7 +35,8 @@ throws_readonly { const my @array => (1, 2, 3, 4); $array[2] = 3 } 'Modify array
 
 lives_ok { const my %hash => (key1 => "value", key2 => "value2")} 'Create hash (list)';
 
-throws_ok { const my %hash => (key1 => "value", "key2") } qr/odd number of/i, 'Odd number of values';
+my ($file, $line) = (__FILE__, __LINE__ + 1);
+throws_ok { const my %hash => (key1 => "value", "key2") } qr/\AOdd number of elements in hash assignment at \Q$file\E line $line\Z/i, 'Odd number of values';
 
 throws_readonly { const my %hash => (key1 => "value", key2 => "value2"); $hash{key1} = "value" } 'Modify hash';
 
