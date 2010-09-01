@@ -66,7 +66,7 @@ __END__
 
 =head1 NAME
 
-Const::Fast - Facility for creating read-only scalars, arrays, hashes
+Const::Fast - Facility for creating read-only scalars, arrays, and hashes
 
 =head1 VERSION
 
@@ -75,7 +75,7 @@ Version 0.003
 =head1 SYNOPSIS
 
  use Const::Fast;
- 
+
  const my $foo => 'a scalar value';
  const my @bar => qw/a list value/;
  const my %buz => (a => 'hash', of => 'something');
@@ -88,13 +88,13 @@ Version 0.003
 
 =head2 const %var, %value...
 
-This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
+This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
 
 Exporting is done using Sub::Exporter for flexibility on import.
 
 =head1 RATIONALE
 
-This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Reasonly's use of ties is a source of subtle bugs and bad performance. Instead this module is using the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case.
+This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Readonly's use of ties is a source of subtle bugs and bad performance. Instead, this module uses the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case.
 
 =head1 AUTHOR
 
@@ -107,7 +107,7 @@ the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const-Fast
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
- 
+
 You can find documentation for this module with the perldoc command.
 
     perldoc Const::Fast
