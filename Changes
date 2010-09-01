@@ -1,5 +1,10 @@
 Revision history for Const-Fast
 
+0.004   2010-09-01
+        Handle recursive datastructures
+        Fixed test on Windows
+        Made other tests more strict
+
 0.003   2010-08-27
         Renamed from Const to Const::Fast
         Added documentation
