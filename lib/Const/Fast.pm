@@ -15,8 +15,9 @@ our $VERSION = '0.003';
 
 sub _make_readonly {
 	my (undef, $dont_clone) = @_;
-	if (my $reftype = reftype $_[0]) {
+	if (my $reftype = reftype $_[0] and not &Internals::SvREADONLY($_[0])) {
 		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
+		&Internals::SvREADONLY($_[0], 1);
 		if ($reftype eq 'ARRAY') {
 			$_[0] = [ @{ $_[0] } ] if $needs_cloning;
 			_make_readonly($_) for @{ $_[0] };
@@ -29,7 +30,6 @@ sub _make_readonly {
 		elsif ($reftype eq 'SCALAR' and $needs_cloning) {
 			$_[0] = \(my $anon = ${ $_[0] });
 		}
-		&Internals::SvREADONLY($_[0], 1);
 	}
 	Internals::SvREADONLY($_[0], 1);
 	return;
@@ -38,9 +38,7 @@ sub _make_readonly {
 ## no critic (ProhibitSubroutinePrototypes, ManyArgs)
 sub const(\[$@%]@) {
 	my (undef, @args) = @_;
-	if (&Internals::SvREADONLY($_[0])) {
-		croak 'Attempt to reassign a readonly variable';
-	}
+	croak 'Attempt to reassign a readonly variable' if &Internals::SvREADONLY($_[0]);
 	if (reftype $_[0] eq 'SCALAR') {
 		croak 'No value for readonly variable' if @args == 0;
 		croak 'Too many arguments in readonly assignment' if @args > 1;

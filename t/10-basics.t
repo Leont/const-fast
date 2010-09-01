@@ -4,7 +4,7 @@
 
 use strict;
 use warnings FATAL => 'all';
-use Test::More tests => 14;
+use Test::More tests => 15;
 use Test::Exception;
 
 use Const::Fast;
@@ -41,6 +41,10 @@ throws_readonly { const my %hash => (key1 => "value", key2 => "value2"); $hash{k
 
 my %computed_values = qw/a A b B c C d D/;
 lives_ok { const my %a2 => %computed_values } 'Hash, computed values';
+
+my %foo;
+$foo{bar} = \%foo;
+lives_ok { const my %recur => ( baz => \%foo ) } 'recursive structures are handles properly';
 
 const my $scalar => 'a scalar value';
 const my @array => 'an', 'array', 'value';
