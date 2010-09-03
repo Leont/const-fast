@@ -1,5 +1,9 @@
 Revision history for Const-Fast
 
+0.005   2010-09-03
+        Various documentation fixes by chromatic
+        Require 5.008 in Build.PL
+
 0.004   2010-09-01
         Handle recursive datastructures
         Fixed test on Windows
