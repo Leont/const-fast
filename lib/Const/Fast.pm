@@ -4,7 +4,7 @@ use 5.008;
 use strict;
 use warnings FATAL => 'all';
 
-use Scalar::Util qw/reftype/;
+use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
 use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
@@ -15,7 +15,7 @@ our $VERSION = '0.005';
 
 sub _make_readonly {
 	my (undef, $dont_clone) = @_;
-	if (my $reftype = reftype $_[0] and not &Internals::SvREADONLY($_[0])) {
+	if (my $reftype = reftype $_[0] and not blessed($_[0]) and not &Internals::SvREADONLY($_[0])) {
 		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
 		&Internals::SvREADONLY($_[0], 1);
 		if ($reftype eq 'ARRAY') {

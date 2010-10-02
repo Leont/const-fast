@@ -4,7 +4,7 @@
 
 use strict;
 use warnings FATAL => 'all';
-use Test::More tests => 15;
+use Test::More tests => 17;
 use Test::Exception;
 
 use Const::Fast;
@@ -62,4 +62,11 @@ ok eq_array(\@array, [qw[an array value]]) => 'const reassign no effect';
 # Reassign hash
 throws_reassign { const %hash => "another", "hash" } 'Hash reassign die';
 ok eq_hash(\%hash, {a => 'hash', of => 'things'}) => 'Const reassign no effect';
+
+# Test for RT#61726
+const my $rx => qr/foo/;
+isa_ok $rx, 'Regexp';
+
+const my %rx => ( foo => qr/foo/ );
+isa_ok $rx{foo}, 'Regexp' or diag( Dumper( \%rx ) ); # fails
 
