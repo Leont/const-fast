@@ -8,7 +8,7 @@ use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
 use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 ## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
@@ -68,7 +68,7 @@ Const::Fast - Facility for creating read-only scalars, arrays, and hashes
 
 =head1 VERSION
 
-Version 0.005
+Version 0.006
 
 =head1 SYNOPSIS
 

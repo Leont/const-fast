@@ -1,5 +1,8 @@
 Revision history for Const-Fast
 
+0.006   2010-10-02
+        Don't make objects readonly. This also fixes RT#61726
+
 0.005   2010-09-03
         Various documentation fixes by chromatic
         Require 5.008 in Build.PL
