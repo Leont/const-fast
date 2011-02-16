@@ -7,6 +7,7 @@ use warnings FATAL => 'all';
 use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
 use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
+use Storable qw/dclone/;
 
 our $VERSION = '0.006';
 
@@ -17,18 +18,14 @@ sub _make_readonly {
 	my (undef, $dont_clone) = @_;
 	if (my $reftype = reftype $_[0] and not blessed($_[0]) and not &Internals::SvREADONLY($_[0])) {
 		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
+		$_[0] = dclone($_[0]) if $needs_cloning;
 		&Internals::SvREADONLY($_[0], 1);
 		if ($reftype eq 'ARRAY') {
-			$_[0] = [ @{ $_[0] } ] if $needs_cloning;
 			_make_readonly($_) for @{ $_[0] };
 		}
 		elsif ($reftype eq 'HASH') {
-			$_[0] = { %{ $_[0] } } if $needs_cloning;
 			&Internals::hv_clear_placeholders($_[0]);
 			_make_readonly($_) for values %{ $_[0] };
-		}
-		elsif ($reftype eq 'SCALAR' and $needs_cloning) {
-			$_[0] = \(my $anon = ${ $_[0] });
 		}
 	}
 	Internals::SvREADONLY($_[0], 1);
