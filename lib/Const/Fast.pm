@@ -9,8 +9,6 @@ use Carp qw/croak/;
 use Sub::Exporter -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 use Storable qw/dclone/;
 
-our $VERSION = '0.006';
-
 ## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 
@@ -57,15 +55,9 @@ sub const(\[$@%]@) {
 
 1;    # End of Const::Fast
 
+# ABSTRACT: Facility for creating read-only scalars, arrays, and hashes
+
 __END__
-
-=head1 NAME
-
-Const::Fast - Facility for creating read-only scalars, arrays, and hashes
-
-=head1 VERSION
-
-Version 0.006
 
 =head1 SYNOPSIS
 
@@ -101,56 +93,8 @@ Perl doesn't distinguish between restricted hashes and readonly hashes. This mea
 
 Will give the error "Attempt to access disallowed key 'baz' in a restricted hash". You have to use C<exists $a{baz}> instead. This is a limitation of perl that can hopefully be solved in the future.
  
-=head1 AUTHOR
-
-Leon Timmermans, C<< <leont at cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-const-fast at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Const-Fast>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Const::Fast
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Const-Fast>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Const-Fast>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Const-Fast>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Const-Fast/>
-
-=back
-
 =head1 ACKNOWLEDGEMENTS
 
 The interface for this module was inspired by Eric Roode's L<Readonly>. The implementation is inspired by doing everything the opposite way Readonly does it.
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2010 Leon Timmermans.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =cut

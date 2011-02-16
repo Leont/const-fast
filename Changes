@@ -1,25 +1,28 @@
 Revision history for Const-Fast
 
-0.006   2010-10-02
-        Don't make objects readonly. This also fixes RT#61726
+{{$NEXT}}
+         Deep clone earlier and using Storable::dclone
 
-0.005   2010-09-03
-        Various documentation fixes by chromatic
-        Require 5.008 in Build.PL
+0.006    2010-10-02
+         Don't make objects readonly. This also fixes RT#61726
 
-0.004   2010-09-01
-        Handle recursive datastructures
-        Fixed test on Windows
-        Made other tests more strict
+0.005    2010-09-03
+         Various documentation fixes by chromatic
+         Require 5.008 in Build.PL
 
-0.003   2010-08-27
-        Renamed from Const to Const::Fast
-        Added documentation
-        Added better diagnostics for hash assignment
+0.004    2010-09-01
+         Handle recursive datastructures
+         Fixed test on Windows
+         Made other tests more strict
 
-0.002   2010-07-09
-        Fixed dependencies
+0.003    2010-08-27
+         Renamed from Const to Const::Fast
+         Added documentation
+         Added better diagnostics for hash assignment
 
-0.001   2010-07-07
-        First version, released on an unsuspecting world.
+0.002    2010-07-09
+         Fixed dependencies
+
+0.001    2010-07-07
+         First version, released on an unsuspecting world.
 
