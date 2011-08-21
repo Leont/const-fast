@@ -4,7 +4,7 @@
 
 use strict;
 use warnings FATAL => 'all';
-use Test::More tests => 20;
+use Test::More tests => 25;
 use Test::Exception;
 
 use Const::Fast;
@@ -26,15 +26,24 @@ sub throws_reassign(&@) {
 	return;
 }
 
-lives_ok {const my $scalar => 45} 'Create scalar';
+lives_ok { const my $scalar => 45 } 'Create scalar';
 
 throws_readonly { const my $scalar => 45; $scalar = 45 } 'Modify scalar';
 
-lives_ok {const my @array => (1, 2, 3, 4)} 'Create array';
+lives_ok { my $ref = \do{45}; $$ref = 45 } 'Modify ref to scalar';
+
+throws_readonly { const my $ref => \do{45}; $$ref = 45 } 'Modify ref to scalar';
+
+lives_ok { my $ref = \\do{45}; $$$ref = 45 } 'Modify ref to ref to scalar';
+
+throws_readonly { const my $ref => \\do{45};  $$ref = 45 } 'Modify ref to ref';
+throws_readonly { const my $ref => \\do{45}; $$$ref = 45 } 'Modify ref to ref to scalar';
+
+lives_ok { const my @array => (1, 2, 3, 4) } 'Create array';
 
 throws_readonly { const my @array => (1, 2, 3, 4); $array[2] = 3 } 'Modify array';
 
-lives_ok { const my %hash => (key1 => "value", key2 => "value2")} 'Create hash (list)';
+lives_ok { const my %hash => (key1 => "value", key2 => "value2") } 'Create hash (list)';
 
 my ($file, $line) = (__FILE__, __LINE__ + 1);
 throws_ok { const my %hash => (key1 => "value", "key2") } qr/\AOdd number of elements in hash assignment at \Q$file\E line $line\Z/i, 'Odd number of values';

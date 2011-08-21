@@ -18,7 +18,10 @@ sub _make_readonly {
 		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
 		$_[0] = dclone($_[0]) if $needs_cloning;
 		&Internals::SvREADONLY($_[0], 1);
-		if ($reftype eq 'ARRAY') {
+		if ($reftype eq 'SCALAR' || $reftype eq 'REF') {
+			_make_readonly(${ $_[0] }, 1);
+		}
+		elsif ($reftype eq 'ARRAY') {
 			_make_readonly($_) for @{ $_[0] };
 		}
 		elsif ($reftype eq 'HASH') {
