@@ -13,17 +13,16 @@ sub throws_readonly(&@) {
 	my ($sub, $desc) = @_;
 	my ($file, $line) = (caller)[1,2];
 	my $error = qr/\AModification of a read-only value attempted at \Q$file\E line $line\.\Z/;
-	@_ = ($sub, $error, $desc);
-	goto &throws_ok;
+	local $Test::Builder::Level = $Test::Builder::Level + 1;
+	return &throws_ok($sub, $error, $desc);
 }
 
 sub throws_reassign(&@) {
 	my ($sub, $desc) = @_;
 	my ($file, $line) = (caller)[1,2];
 	my $error = qr/\AAttempt to reassign a readonly \w+ at \Q$file\E line $line\Z/;
-	@_ = ($sub, $error, $desc);
-	goto &throws_ok;
-	return;
+	local $Test::Builder::Level = $Test::Builder::Level + 1;
+	return &throws_ok($sub, $error, $desc);
 }
 
 lives_ok { const my $scalar => 45 } 'Create scalar';
