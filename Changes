@@ -1,9 +1,10 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+          Recurse into scalar references too
 
 0.007     2011-02-16 22:58:27 Europe/Amsterdam
-         Deep clone earlier and using Storable::dclone
+          Deep clone earlier and using Storable::dclone
 
 0.006    2010-10-02
          Don't make objects readonly. This also fixes RT#61726
