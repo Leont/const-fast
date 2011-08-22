@@ -4,7 +4,7 @@
 
 use strict;
 use warnings FATAL => 'all';
-use Test::More tests => 25;
+use Test::More tests => 23;
 use Test::Exception;
 
 use Const::Fast;
@@ -30,11 +30,7 @@ lives_ok { const my $scalar => 45 } 'Create scalar';
 
 throws_readonly { const my $scalar => 45; $scalar = 45 } 'Modify scalar';
 
-lives_ok { my $ref = \do{45}; $$ref = 45 } 'Modify ref to scalar';
-
 throws_readonly { const my $ref => \do{45}; $$ref = 45 } 'Modify ref to scalar';
-
-lives_ok { my $ref = \\do{45}; $$$ref = 45 } 'Modify ref to ref to scalar';
 
 throws_readonly { const my $ref => \\do{45};  $$ref = 45 } 'Modify ref to ref';
 throws_readonly { const my $ref => \\do{45}; $$$ref = 45 } 'Modify ref to ref to scalar';
