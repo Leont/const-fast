@@ -1,6 +1,8 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+
+0.008     2011-08-22 13:14:05 Europe/Amsterdam
           Recurse into scalar references too
 
 0.007     2011-02-16 22:58:27 Europe/Amsterdam
