@@ -36,6 +36,7 @@ sub _make_readonly {
 ## no critic (ProhibitSubroutinePrototypes, ManyArgs)
 sub const(\[$@%]@) {
 	my (undef, @args) = @_;
+	croak 'Invalid first argument, need an reference' if not defined reftype($_[0]);
 	croak 'Attempt to reassign a readonly variable' if &Internals::SvREADONLY($_[0]);
 	if (reftype $_[0] eq 'SCALAR') {
 		croak 'No value for readonly variable' if @args == 0;
