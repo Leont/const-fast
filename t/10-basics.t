@@ -20,7 +20,7 @@ sub throws_readonly(&@) {
 sub throws_reassign(&@) {
 	my ($sub, $desc) = @_;
 	my ($file, $line) = (caller)[1,2];
-	my $error = qr/\AAttempt to reassign a readonly \w+ at \Q$file\E line $line\Z/;
+	my $error = qr/\AAttempt to reassign a readonly \w+ at \Q$file\E line $line\.?\Z/;
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
 	return &throws_ok($sub, $error, $desc);
 }
