@@ -2,6 +2,9 @@ Revision history for Const-Fast
 
 {{$NEXT}}
 
+0.010     2012-02-04 12:54:09 Europe/Amsterdam
+          Fix compatibility with dotted Carp (1.25?)
+
 0.009     2011-11-27 19:47:19 Europe/Amsterdam
           Make sure the first argument comes in as a reference
 
