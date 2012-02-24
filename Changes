@@ -1,6 +1,7 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+          Accept references to references as subject
 
 0.010     2012-02-04 12:54:09 Europe/Amsterdam
           Fix compatibility with dotted Carp (1.25?)

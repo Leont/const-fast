@@ -82,4 +82,7 @@ isa_ok $rx{foo}, 'Regexp' or diag( Dumper( \%rx ) ); # fails
 
 throws_ok { &const(1, 1) } qr/^Invalid first argument, need an reference at/, 'First argument must be a reference after prototypes';
 
+my $a = \{}; 
+lives_ok { const($a => $a) };
+
 done_testing;

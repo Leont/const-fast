@@ -38,7 +38,7 @@ sub const(\[$@%]@) {
 	my (undef, @args) = @_;
 	croak 'Invalid first argument, need an reference' if not defined reftype($_[0]);
 	croak 'Attempt to reassign a readonly variable' if &Internals::SvREADONLY($_[0]);
-	if (reftype $_[0] eq 'SCALAR') {
+	if (reftype $_[0] eq 'SCALAR' or reftype $_[0] eq 'REF') {
 		croak 'No value for readonly variable' if @args == 0;
 		croak 'Too many arguments in readonly assignment' if @args > 1;
 		${ $_[0] } = $args[0];
