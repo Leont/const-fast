@@ -1,6 +1,8 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+          The value being assigned is now returned as the result of the const
+          expression (Karen Etheridge).
 
 0.011     2012-02-24 22:48:26 Europe/Amsterdam
           Accept references to references as subject
