@@ -54,7 +54,16 @@ sub const(\[$@%]@) {
 		croak 'Can\'t make variable readonly';
 	}
 	_make_readonly($_[0], 1);
-	return;
+
+	if (reftype $_[0] eq 'SCALAR' or reftype $_[0] eq 'REF') {
+            return ${ $_[0] };
+        }
+	elsif (reftype $_[0] eq 'ARRAY') {
+            return @{ $_[0] };
+        }
+	elsif (reftype $_[0] eq 'HASH') {
+	    return %{ $_[0] };
+        }
 }
 
 1;    # End of Const::Fast
