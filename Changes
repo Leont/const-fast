@@ -1,6 +1,8 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+
+0.012     2012-08-09 13:51:29 Europe/Bucharest
           Depend on Test::Exception 0.28
           Switch to Sub::Exporter::Progressive, for a faster startup
 
