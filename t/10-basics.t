@@ -5,7 +5,7 @@
 use strict;
 use warnings FATAL => 'all';
 use Test::More 0.88;
-use Test::Exception;
+use Test::Exception 0.29;
 
 use Const::Fast;
 
