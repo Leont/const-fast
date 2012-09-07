@@ -61,8 +61,6 @@ sub const(\[$@%]@) {
 
 # ABSTRACT: Facility for creating read-only scalars, arrays, and hashes
 
-__END__
-
 =head1 SYNOPSIS
 
  use Const::Fast;
