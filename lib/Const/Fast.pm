@@ -7,7 +7,13 @@ use warnings FATAL => 'all';
 use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
 use Sub::Exporter::Progressive -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
-use Storable qw/dclone/;
+
+sub _dclone($) {
+	require Storable;
+	no warnings 'redefine';
+	*_dclone = \&Storable::dclone;
+	goto &Storable::dclone;
+}
 
 ## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
 # The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
@@ -16,7 +22,7 @@ sub _make_readonly {
 	my (undef, $dont_clone) = @_;
 	if (my $reftype = reftype $_[0] and not blessed($_[0]) and not &Internals::SvREADONLY($_[0])) {
 		my $needs_cloning = !$dont_clone && &Internals::SvREFCNT($_[0]) > 1;
-		$_[0] = dclone($_[0]) if $needs_cloning;
+		$_[0] = _dclone($_[0]) if $needs_cloning;
 		&Internals::SvREADONLY($_[0], 1);
 		if ($reftype eq 'SCALAR' || $reftype eq 'REF') {
 			_make_readonly(${ $_[0] }, 1);
