@@ -85,7 +85,7 @@ sub const(\[$@%]@) {
 
 This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
 
-Exporting is done using Sub::Exporter for flexibility on import.
+Exporting is done using Sub::Exporter::Progressive. In the future you may need to depend on Sub::Exporter explicitly if you need the latter's flexibility.
 
 =head1 RATIONALE
 
