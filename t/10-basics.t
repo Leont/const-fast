@@ -5,7 +5,7 @@
 use strict;
 use warnings FATAL => 'all';
 use Test::More 0.88;
-use Test::Exception 0.29;
+use Test::Fatal qw(exception lives_ok);
 
 use Const::Fast;
 
@@ -14,7 +14,7 @@ sub throws_readonly(&@) {
 	my ($file, $line) = (caller)[1,2];
 	my $error = qr/\AModification of a read-only value attempted at \Q$file\E line $line\.\Z/;
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
-	return &throws_ok($sub, $error, $desc);
+	like(exception { $sub->() }, $error, $desc);
 }
 
 sub throws_reassign(&@) {
@@ -22,7 +22,13 @@ sub throws_reassign(&@) {
 	my ($file, $line) = (caller)[1,2];
 	my $error = qr/\AAttempt to reassign a readonly \w+ at \Q$file\E line $line\.?\Z/;
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
-	return &throws_ok($sub, $error, $desc);
+	like(exception { $sub->() }, $error, $desc);
+}
+
+sub throws_ok(&@) {
+	my ($sub, $error, $desc) = @_;
+	local $Test::Builder::Level = $Test::Builder::Level + 1;
+	like(exception { $sub->() }, $error, $desc);
 }
 
 lives_ok { const my $scalar => 45 } 'Create scalar';
