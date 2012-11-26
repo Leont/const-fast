@@ -1,6 +1,7 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+          Conversion from Test::Exception to Test::Fatal (Karen Etheridge)
 
 0.013     2012-09-07 23:50:25 Europe/Amsterdam
           Lazy load Storable, it's usually not necessary
