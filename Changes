@@ -1,6 +1,8 @@
 Revision history for Const-Fast
 
 {{$NEXT}}
+
+0.014     2013-05-28 02:32:48 Europe/Amsterdam
           Pass coderefs and globrefs unchanged
           Conversion from Test::Exception to Test::Fatal (Karen Etheridge)
           Convert to Module::Build::Tiny
