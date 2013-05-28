@@ -6,7 +6,7 @@ use warnings FATAL => 'all';
 
 use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
-use Sub::Exporter::Progressive -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
+use Sub::Exporter::Progressive 0.001007 -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
 sub _dclone($) {
 	require Storable;
@@ -86,7 +86,7 @@ sub const(\[$@%]@) {
 
 This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
 
-Exporting is done using Sub::Exporter::Progressive. In the future you may need to depend on Sub::Exporter explicitly if you need the latter's flexibility.
+Exporting is done using Sub::Exporter::Progressive. You may need to depend on Sub::Exporter explicitly if you need the latter's flexibility.
 
 =head1 RATIONALE
 
