@@ -3,6 +3,7 @@ Revision history for Const-Fast
 {{$NEXT}}
           Pass coderefs and globrefs unchanged
           Conversion from Test::Exception to Test::Fatal (Karen Etheridge)
+          Convert to Module::Build::Tiny
 
 0.013     2012-09-07 23:50:25 Europe/Amsterdam
           Lazy load Storable, it's usually not necessary
