@@ -8,6 +8,8 @@ use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
 use Sub::Exporter::Progressive 0.001007 -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
 
+## no critic (RequireArgUnpacking, ProhibitAmpersandSigils, ProhibitSubroutinePrototypes, ManyArgs)
+
 sub _dclone($) {
 	require Storable;
 	no warnings 'redefine';
@@ -15,11 +17,9 @@ sub _dclone($) {
 	goto &Storable::dclone;
 }
 
-## no critic (RequireArgUnpacking, ProhibitAmpersandSigils)
-# The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
-
 my %skip = map { $_ => 1 } qw/CODE GLOB/;
 
+# The use of $_[0] is deliberate and essential, to be able to use it as an lvalue and to keep the refcount down.
 sub _make_readonly {
 	my (undef, $dont_clone) = @_;
 	if (my $reftype = reftype $_[0] and not blessed($_[0]) and not &Internals::SvREADONLY($_[0])) {
@@ -40,7 +40,6 @@ sub _make_readonly {
 	return;
 }
 
-## no critic (ProhibitSubroutinePrototypes, ManyArgs)
 sub const(\[$@%]@) {
 	my (undef, @args) = @_;
 	croak 'Invalid first argument, need an reference' if not defined reftype($_[0]);
