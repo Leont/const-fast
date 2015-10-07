@@ -106,4 +106,14 @@ Will give the error "Attempt to access disallowed key 'baz' in a restricted hash
 
 The interface for this module was inspired by Eric Roode's L<Readonly>. The implementation is inspired by doing everything the opposite way Readonly does it.
 
+=head1 SEE ALSO
+
+=over 8
+
+=item C<Readonly>
+
+=item C<Data::Lock>
+
+=item the C<constant> pragma
+
 =cut
