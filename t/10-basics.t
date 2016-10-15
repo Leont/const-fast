@@ -91,4 +91,14 @@ throws_ok { &const(1, 1) } qr/^Invalid first argument, need an reference at/, 'F
 my $a = \{}; 
 lives_ok { const($a => $a) };
 
+subtest 'const return value' => sub {
+    is_deeply [ const my $foo => 'hello' ], [ \'hello' ], 'scalar';
+
+    is_deeply [ my $copy = const my @foo => 1..5 ], [ [ 1,2,3,4,5 ] ], 'array';
+    is_deeply [ const my %foo => 1..4 ], [ { 1,2,3,4 } ], 'hash';
+
+    throws_readonly { $copy->[0]= 'foo' }, 'still readonly';
+
+};
+
 done_testing;
