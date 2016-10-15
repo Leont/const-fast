@@ -61,7 +61,7 @@ sub const(\[$@%]@) {
 		croak 'Can\'t make variable readonly';
 	}
 	_make_readonly($_[0], 1);
-	return;
+	return $_[0];
 }
 
 1;    # End of Const::Fast
@@ -84,7 +84,8 @@ sub const(\[$@%]@) {
 
 =head2 const %var, %value...
 
-This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly.
+This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly. 
+The function also returns a reference to the (readonly, natch) value of the constant.
 
 Exporting is done using Sub::Exporter::Progressive. You may need to depend on Sub::Exporter explicitly if you need the latter's flexibility.
 
