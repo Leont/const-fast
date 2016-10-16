@@ -101,4 +101,18 @@ subtest 'const return value' => sub {
 
 };
 
+subtest 'const_anon' => sub {
+    use Const::Fast 'const_anon';
+
+    is_deeply [ my $copy = const_anon [ 1..5 ] ], [ [ 1,2,3,4,5 ] ], 'array';
+    is_deeply [ const_anon { 1..4 } ], [ { 1,2,3,4 } ], 'hash';
+
+    throws_readonly { $copy->[0]= 'foo' };
+
+    throws_ok {
+        const_anon 'nope';
+    } qr/argument must be array or hash reference/, 'must be hash or array';
+
+};
+
 done_testing;
