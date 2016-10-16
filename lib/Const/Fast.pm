@@ -6,7 +6,10 @@ use warnings FATAL => 'all';
 
 use Scalar::Util qw/reftype blessed/;
 use Carp qw/croak/;
-use Sub::Exporter::Progressive 0.001007 -setup => { exports => [qw/const/], groups => { default => [qw/const/] } };
+use Sub::Exporter::Progressive 0.001007 -setup => {
+    exports => [qw/const const_anon /],
+    groups  => { default => [qw/const/] }
+};
 
 sub _dclone($) {
 	require Storable;
@@ -61,7 +64,18 @@ sub const(\[$@%]@) {
 		croak 'Can\'t make variable readonly';
 	}
 	_make_readonly($_[0], 1);
+
 	return $_[0];
+}
+
+sub const_anon($) {
+    my $ref = shift;
+
+    return const my @array, @$ref if ref $ref eq 'ARRAY';
+
+    return const my %hash, %$ref if ref $ref eq 'HASH';
+
+    croak "argument must be array or hash reference";
 }
 
 1;    # End of Const::Fast
@@ -84,10 +98,32 @@ sub const(\[$@%]@) {
 
 =head2 const %var, %value...
 
-This the only function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly. 
+The main function of this module and it is exported by default. It takes a scalar, array or hash lvalue as first argument, and a list of one or more values depending on the type of the first argument as the value for the variable. It will set the variable to that value and subsequently make it readonly. Arrays and hashes will be made deeply readonly. 
 The function also returns a reference to the (readonly, natch) value of the constant.
 
 Exporting is done using Sub::Exporter::Progressive. You may need to depend on Sub::Exporter explicitly if you need the latter's flexibility.
+
+=head2 const_anon $array_or_hash_ref
+
+Makes the referenced value readonly and returns it. Useful to shorten a little bit
+
+    sub foo {
+        # ...
+
+        const my $foo => { a => 1, b => 2 };
+        return $foo;
+    }
+
+into
+
+    sub foo {
+        # ...
+
+        return const_anon { a => 1, b => 2 };
+    }
+
+Not exported by default.
+    
 
 =head1 RATIONALE
 
