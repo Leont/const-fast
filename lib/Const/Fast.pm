@@ -126,7 +126,7 @@ Not exported by default.
 
 =head1 RATIONALE
 
-This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Readonly's use of ties is a source of subtle bugs and bad performance. Instead, this module uses the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case. This may change in the future if someone takes up maintenance of Readonly, and the two modules may be convergence if that happens.
+This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Readonly's use of ties is a source of subtle bugs and bad performance. Instead, this module uses the builtin readonly feature of perl 5.008+, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case. This may change in the future if someone takes up maintenance of Readonly, and the two modules may be convergence if that happens.
 
 =head1 CAVEATS
 
@@ -137,9 +137,19 @@ Perl doesn't distinguish between restricted hashes and readonly hashes. This mea
  say 1 unless $a{baz}
 
 Will give the error "Attempt to access disallowed key 'baz' in a restricted hash". You have to use C<exists $a{baz}> instead. This is a limitation of perl that can hopefully be solved in the future.
- 
+
 =head1 ACKNOWLEDGEMENTS
 
 The interface for this module was inspired by Eric Roode's L<Readonly>. The implementation is inspired by doing everything the opposite way Readonly does it.
+
+=head1 SEE ALSO
+
+=over 8
+
+=item C<Readonly>
+
+=item C<Data::Lock>
+
+=item the C<constant> pragma
 
 =cut
