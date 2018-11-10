@@ -122,11 +122,11 @@ into
     }
 
 Not exported by default.
-    
+
 
 =head1 RATIONALE
 
-This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Readonly's use of ties is a source of subtle bugs and bad performance. Instead, this module uses the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case. This may change in the future if someone takes up maintenance of Readonly, and the two modules may be convergence if that happens.
+This module was written because I stumbled on some serious issues of L<Readonly> that aren't easily fixable without breaking backwards compatibility in subtle ways. In particular Readonly's use of ties is a source of subtle bugs and bad performance. Instead, this module uses the builtin readonly feature of perl, making access to the variables just as fast as any normal variable without the weird side-effects of ties. Readonly can do the same for scalars when Readonly::XS is installed, but chooses not to do so in the most common case. This may change in the future if someone takes up maintenance of Readonly, and the two modules may converge if that happens.
 
 =head1 CAVEATS
 
