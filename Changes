@@ -2,6 +2,7 @@ Revision history for Const-Fast
 
 {{$NEXT}}
           - Add a const_anon function (Yanick Champoux)
+          - Fix typo in POD (Robert Rothenberg)
 
 0.014     2013-05-28 02:32:48 Europe/Amsterdam
           Pass coderefs and globrefs unchanged
